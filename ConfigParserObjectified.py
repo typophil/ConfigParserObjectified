@@ -1,4 +1,8 @@
-from configparser import ConfigParser
+from sys import version_info
+if version_info[0] == 2:
+    from ConfigParser import ConfigParser
+elif version_info[0] == 3:
+    from configparser import ConfigParser
 
 class ConfigObject(object):
 
@@ -10,7 +14,7 @@ class ConfigObject(object):
         pass
 
     def __init__(self, cfg_file):
-        PARSER = ConfigParser.ConfigParser()
+        PARSER = ConfigParser()
         PARSER.read(cfg_file)
 
         for cfg_section in PARSER.sections():
@@ -21,4 +25,3 @@ class ConfigObject(object):
             for cfg_option in PARSER.options(cfg_section):
                 # Set the values for the section options
                 setattr(getattr(self, cfg_section), cfg_option, PARSER.get(cfg_section, cfg_option))
-
